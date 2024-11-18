@@ -10,8 +10,8 @@ EOF;
 
 $finder = PhpCsFixer\Finder::create()
     ->files()
-    ->in('src')
-    ->in('tests')
+    ->in(dirname(__DIR__, 2) . '/src')
+    ->in(dirname(__DIR__, 2) . '/tests')
 ;
 
 $config = new PhpCsFixer\Config;
