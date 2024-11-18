@@ -12,9 +12,11 @@ namespace App\Entity;
 use function array_unique;
 
 use App\Repository\UserRepository;
+
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
@@ -23,11 +25,14 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
 {
     public function __construct(
         #[ORM\Id]
-        #[ORM\GeneratedValue]
-        #[ORM\Column]
-        public ?int $id = null,
+        #[ORM\Column(type: 'uuid')]
+        #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+        #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
+        public ?Uuid $id = null,
         #[ORM\Column(length: 180)]
         public ?string $identifier = null,
+        #[ORM\Column(length: 180)]
+        public ?string $identifierType = null,
         /**
          * @var list<string> The user roles
          */
