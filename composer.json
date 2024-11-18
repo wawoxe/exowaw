@@ -62,18 +62,20 @@
         "install:code-tools": [
             "composer install --working-dir=tools/php-cs-fixer",
             "composer install --working-dir=tools/phpstan",
-            "composer install --working-dir=tools/phpmd",
-            "composer install --working-dir=tools/psalm"
+            "composer install --working-dir=tools/phpmd"
+        ],
+        "update:code-tools": [
+            "composer update --working-dir=tools/php-cs-fixer",
+            "composer update --working-dir=tools/phpstan",
+            "composer update --working-dir=tools/phpmd"
         ],
         "code:cs-fixer": "tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --config=tools/php-cs-fixer/.php-cs-fixer.dist.php",
         "code:phpstan": "tools/phpstan/vendor/bin/phpstan analyse -c tools/phpstan/phpstan.dist.neon",
         "code:phpmd": "tools/phpmd/vendor/bin/phpmd src tests ansi tools/phpmd/phpmd.xml",
-        "code:psalm": "tools/psalm/vendor/bin/psalm --config=tools/psalm/psalm.xml",
         "code:run-all": [
             "@code:cs-fixer",
             "@code:phpstan",
-            "@code:phpmd",
-            "@code:psalm"
+            "@code:phpmd"
         ]
     },
     "conflict": {
