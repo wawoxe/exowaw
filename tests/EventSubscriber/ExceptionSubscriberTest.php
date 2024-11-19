@@ -32,6 +32,9 @@ final class ExceptionSubscriberTest extends TestCase
         $this->exceptionSubscriber = new ExceptionSubscriber;
     }
 
+    /**
+     * @return array<int, array<int, Exception|int>>
+     */
     public function exceptionProvider(): array
     {
         return [
