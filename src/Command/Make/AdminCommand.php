@@ -7,14 +7,12 @@ declare(strict_types=1);
  *
  * This software is licensed under the MIT License. See the LICENSE file for more details.
  */
-namespace App\Command\Installation\Make;
+namespace App\Command\Make;
 
 use function is_string;
 
 use App\Entity\User;
-
 use Doctrine\ORM\EntityManagerInterface;
-
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
