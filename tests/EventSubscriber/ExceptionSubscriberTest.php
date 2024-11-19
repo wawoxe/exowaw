@@ -14,7 +14,9 @@ use function json_decode;
 use App\EventSubscriber\ExceptionSubscriber;
 
 use Exception;
+
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -41,6 +43,10 @@ final class ExceptionSubscriberTest extends TestCase
             [
                 new NotFoundHttpException('No route found for "GET https://localhost/not-found-page"'),
                 Response::HTTP_NOT_FOUND,
+            ],
+            [
+                new BadRequestException('Invalid request format'),
+                Response::HTTP_BAD_REQUEST,
             ],
             [
                 new Exception('An unexpected error occurred'),

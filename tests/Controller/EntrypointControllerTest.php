@@ -22,8 +22,14 @@ final class EntrypointControllerTest extends WebTestCase
         // Create a client to make requests
         $client = self::createClient();
 
+        // Content-Type must be application/json on each request
+        $client->setServerParameter('HTTP_CONTENT_TYPE', 'application/json');
+
         // Request to the entrypoint
-        $client->request(Request::METHOD_GET, '/');
+        $client->request(
+            method: Request::METHOD_GET,
+            uri: '/',
+        );
 
         // Check if the response status is 200
         $this->assertResponseIsSuccessful();
