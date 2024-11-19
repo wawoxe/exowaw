@@ -9,15 +9,16 @@ declare(strict_types=1);
  */
 namespace App\Entity;
 
-use Symfony\Component\Validator\Constraints as Assert;
 use function array_unique;
 
 use App\Repository\UserRepository;
 
 use Doctrine\ORM\Mapping as ORM;
+
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Uid\Uuid;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
@@ -34,13 +35,20 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
         public ?Uuid $id = null,
         #[
             ORM\Column(length: 180),
-            Assert\NotBlank,
-            Assert\Length(max: 180),
+            Assert\NotBlank(message: 'validation.user.identifier.notBlank'),
+            Assert\Length(
+                max: 180,
+                maxMessage: 'validation.user.identifier.maxLength',
+            ),
         ]
         public ?string $identifier = null,
         #[
             ORM\Column(length: 180),
-            Assert\NotBlank,
+            Assert\NotBlank(message: 'validation.user.identifierType.notBlank'),
+            Assert\Choice(
+                choices: ['email', 'username'],
+                message: 'validation.user.identifierType.choice',
+            )
         ]
         public ?string $identifierType = null,
         /**
@@ -51,11 +59,17 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
         /**
          * @var null|string The hashed password
          */
+        #[ORM\Column]
+        private ?string $password = null,
         #[
-            ORM\Column,
-            Assert\NotBlank,
+            Assert\When(
+                expression: 'this.password === null',
+                constraints: [
+                    new Assert\NotBlank(message: 'validation.user.plainPassword.notBlank'),
+                ],
+            ),
         ]
-        public ?string $password = null,
+        public ?string $plainPassword = null,
     ) {
         $this->roles[] = 'ROLE_USER';
         $this->roles   = array_unique($this->roles);
@@ -91,5 +105,6 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
      */
     public function eraseCredentials(): void
     {
+        $this->plainPassword = null;
     }
 }
