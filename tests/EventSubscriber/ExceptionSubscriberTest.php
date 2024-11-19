@@ -9,6 +9,7 @@ declare(strict_types=1);
  */
 namespace App\Tests\EventSubscriber;
 
+use Throwable;
 use function json_decode;
 
 use App\EventSubscriber\ExceptionSubscriber;
@@ -30,50 +31,31 @@ final class ExceptionSubscriberTest extends TestCase
         $this->exceptionSubscriber = new ExceptionSubscriber;
     }
 
-    public function testOnKernelExceptionForNotFoundHttpException(): void
+    public function exceptionProvider(): array
     {
-        $exception = new NotFoundHttpException('No route found for "GET https://localhost/not-found-page"');
-
-        // Create a fake Request object
-        $request = new Request;
-
-        // Create ExceptionEvent instance with the exception and request
-        $event = new ExceptionEvent(
-            $this->createMock(HttpKernelInterface::class),  // mock the kernel
-            $request,  // pass the request
-            HttpKernelInterface::MAIN_REQUEST,  // Request type
-            $exception,  // pass the exception
-        );
-
-        // Execute the subscriber's exception handler
-        $this->exceptionSubscriber->onKernelException($event);
-
-        // Get the response from the event
-        $response = $event->getResponse();
-
-        // Assertions to check if the response is correct
-        $this->assertInstanceOf(JsonResponse::class, $response);
-        $this->assertEquals(Response::HTTP_NOT_FOUND, $response->getStatusCode());
-
-        // Decode the response content to check the message
-        $this->assertIsString($response->getContent());
-        $data = json_decode($response->getContent(), true);
-
-        $this->assertIsArray($data);
-        $this->assertEquals('No route found for "GET https://localhost/not-found-page"', $data['message']);
-        $this->assertEquals(Response::HTTP_NOT_FOUND, $data['code']);
+        return [
+            [
+                new NotFoundHttpException('No route found for "GET https://localhost/not-found-page"'),
+                Response::HTTP_NOT_FOUND,
+            ],
+            [
+                new Exception('An unexpected error occurred'),
+                Response::HTTP_INTERNAL_SERVER_ERROR,
+            ],
+        ];
     }
 
-    public function testOnKernelExceptionForGenericException(): void
+    /**
+     * @dataProvider exceptionProvider
+     */
+    public function testOnKernelException(Throwable $exception, int $expectedCode): void
     {
-        $exception = new Exception('An unexpected error occurred');
-
         // Create a fake Request object
         $request = new Request;
 
         // Create ExceptionEvent instance with the exception and request
         $event = new ExceptionEvent(
-            $this->createMock(HttpKernelInterface::class),  // mock the kernel
+            $this->createMock(HttpKernelInterface::class),  // Mock the kernel
             $request,  // pass the request
             HttpKernelInterface::MAIN_REQUEST,  // Request type
             $exception,  // pass the exception
@@ -87,14 +69,14 @@ final class ExceptionSubscriberTest extends TestCase
 
         // Assertions to check if the response is correct
         $this->assertInstanceOf(JsonResponse::class, $response);
-        $this->assertEquals(Response::HTTP_INTERNAL_SERVER_ERROR, $response->getStatusCode());
+        $this->assertEquals($expectedCode, $response->getStatusCode());
 
         // Decode the response content to check the message
         $this->assertIsString($response->getContent());
         $data = json_decode($response->getContent(), true);
 
         $this->assertIsArray($data);
-        $this->assertEquals('An unexpected error occurred', $data['message']);
-        $this->assertEquals(Response::HTTP_INTERNAL_SERVER_ERROR, $data['code']);
+        $this->assertEquals($exception->getMessage(), $data['message']);
+        $this->assertEquals($expectedCode, $data['code']);
     }
 }

@@ -13,8 +13,10 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Throwable;
 
 class ExceptionSubscriber implements EventSubscriberInterface
 {
@@ -27,20 +29,22 @@ class ExceptionSubscriber implements EventSubscriberInterface
 
     public function onKernelException(ExceptionEvent $event): void
     {
-        $exception = $event->getThrowable();
+        $event->setResponse($this->createErrorResponse($event->getThrowable()));
+    }
 
-        // Prepare the error response data
-        $data = ['message' => $exception->getMessage()];
+    private function createErrorResponse(Throwable $exception): JsonResponse
+    {
+        $httpCode = $this->getHttpCode($exception);
 
-        // Set up status code by exception class name
-        $data['code'] = match ($exception::class) {
-            NotFoundHttpException::class => Response::HTTP_NOT_FOUND,
-            default                      => Response::HTTP_INTERNAL_SERVER_ERROR,
+        return new JsonResponse(['message' => $exception->getMessage(), 'code' => $httpCode], $httpCode);
+    }
+
+    private function getHttpCode(Throwable $exception): int
+    {
+        return match ($exception::class) {
+            AccessDeniedHttpException::class => Response::HTTP_FORBIDDEN,
+            NotFoundHttpException::class     => Response::HTTP_NOT_FOUND,
+            default                          => Response::HTTP_INTERNAL_SERVER_ERROR,
         };
-
-        // Create the JSON response
-        $response = new JsonResponse($data, $data['code']);
-
-        $event->setResponse($response);
     }
 }

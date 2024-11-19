@@ -9,6 +9,7 @@ declare(strict_types=1);
  */
 namespace App\Entity;
 
+use Symfony\Component\Validator\Constraints as Assert;
 use function array_unique;
 
 use App\Repository\UserRepository;
@@ -24,14 +25,23 @@ use Symfony\Component\Uid\Uuid;
 class User implements PasswordAuthenticatedUserInterface, UserInterface
 {
     public function __construct(
-        #[ORM\Id]
-        #[ORM\Column(type: 'uuid')]
-        #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-        #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
+        #[
+            ORM\Id,
+            ORM\Column(type: 'uuid'),
+            ORM\GeneratedValue(strategy: 'CUSTOM'),
+            ORM\CustomIdGenerator(class: 'doctrine.uuid_generator'),
+        ]
         public ?Uuid $id = null,
-        #[ORM\Column(length: 180)]
+        #[
+            ORM\Column(length: 180),
+            Assert\NotBlank,
+            Assert\Length(max: 180),
+        ]
         public ?string $identifier = null,
-        #[ORM\Column(length: 180)]
+        #[
+            ORM\Column(length: 180),
+            Assert\NotBlank,
+        ]
         public ?string $identifierType = null,
         /**
          * @var list<string> The user roles
@@ -41,7 +51,10 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
         /**
          * @var null|string The hashed password
          */
-        #[ORM\Column]
+        #[
+            ORM\Column,
+            Assert\NotBlank,
+        ]
         public ?string $password = null,
     ) {
         $this->roles[] = 'ROLE_USER';

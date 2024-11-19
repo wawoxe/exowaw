@@ -16,6 +16,9 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route(name: 'api_entrypoint_')]
 class EntrypointController extends AbstractController
 {
+    /**
+     * Entry point for the API.
+     */
     #[Route(
         path: '/',
         name: 'read',
