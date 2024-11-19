@@ -15,6 +15,8 @@ use App\Repository\UserRepository;
 
 use Doctrine\ORM\Mapping as ORM;
 
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Uid\Uuid;
@@ -23,6 +25,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 #[ORM\UniqueConstraint(name: 'UNIQ_USER_IDENTIFIER', fields: ['identifier'])]
+#[UniqueEntity(fields: ['identifier'], message: 'validation.user.identifier.unique')]
 class User implements PasswordAuthenticatedUserInterface, UserInterface
 {
     public function __construct(
@@ -60,7 +63,7 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
          * @var null|string The hashed password
          */
         #[ORM\Column]
-        private ?string $password = null,
+        public ?string $password = null,
         #[
             Assert\When(
                 expression: 'this.password === null',
