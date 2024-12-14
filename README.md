@@ -69,6 +69,8 @@ nano .env.local # Configure project
 
 4. **Database setup**
 ```bash
+# If you don't have Symfony installed, then use "php bin/console" instead of "symfony console"
+
 symfony console doctrine:database:create # Only if database doesn't exist
 symfony console doctrine:migrations:migrate # Make all database migrations
 
@@ -153,5 +155,3 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 ## 🌟 Show Your Support
 
 If you like this project, give it a ⭐ on GitHub!
-
----
