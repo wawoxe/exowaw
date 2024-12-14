@@ -32,8 +32,6 @@ The following features are planned for future updates:
 - [ ] API for changing email and password
 - [ ] 2FA authentication
 
----
-
 ## 📦 Installation
 
 ### Prerequisites
