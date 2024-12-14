@@ -1,6 +1,6 @@
 # Wawoxe API
 
-[![PHP Version](https://img.shields.io/badge/PHP-%5E8.2-blue)](https://www.php.net)
+[![PHP Version](https://img.shields.io/badge/PHP-%3E=8.2-blue)](https://www.php.net)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
 The backend for powering your personal website.
