@@ -10,14 +10,10 @@ The backend for powering your personal website.
 - [✨ Overview](#-overview)
 - [🔧 Features](#-features)
 - [📦 Installation](#-installation)
-- [🚀 Usage](#-usage)
-- [🛠 API Endpoints](#-api-endpoints)
 - [✅ Testing](#-testing)
 - [🤝 Contributing](#-contributing)
 - [📄 License](#-license)
-- [📧 Contact](#-contact)
-
----
+- [🌟 Show Your Support](#-show-your-support)
 
 ## 🔧 Overview
 
@@ -26,8 +22,6 @@ The backend for powering your personal website.
 - 📝 **Blog Posts** — Optional endpoint for dynamic blogging.
 - 📬 **Contact Form API** — Handle contact submissions with ease.
 - 🔐 **Secure & Extensible** — Ready for production with secure request handling.
-
----
 
 ## 📝 Features
 
@@ -104,8 +98,6 @@ symfony console app:installation:make:admin admin@example.com adminpass # Change
 https://localhost:8000
 ```
 
----
-
 ## ✅ Testing
 
 To ensure everything works as expected, run the test suite using PHPUnit:
@@ -113,8 +105,6 @@ To ensure everything works as expected, run the test suite using PHPUnit:
 ```bash
 php bin/phpunit
 ```
-
----
 
 ## 🤝 Contributing
 
@@ -144,13 +134,9 @@ git push origin feature/your-feature
 
 5. **Open a Pull Request**
 
----
-
 ## 📄 License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
----
 
 ## 🌟 Show Your Support
 
