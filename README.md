@@ -1,0 +1,157 @@
+# Wawoxe API
+
+[![PHP Version](https://img.shields.io/badge/PHP-%5E8.2-blue)](https://www.php.net)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+
+The backend for powering your personal website.
+
+## Table of Contents
+
+- [✨ Overview](#-overview)
+- [🔧 Features](#-features)
+- [📦 Installation](#-installation)
+- [🚀 Usage](#-usage)
+- [🛠 API Endpoints](#-api-endpoints)
+- [✅ Testing](#-testing)
+- [🤝 Contributing](#-contributing)
+- [📄 License](#-license)
+- [📧 Contact](#-contact)
+
+---
+
+## 🔧 Overview
+
+- ✅ **Resume** — Serve your bio and key information dynamically.
+- 🗂 **Portfolio Management** — Showcase all projects with descriptions and links.
+- 📝 **Blog Posts** — Optional endpoint for dynamic blogging.
+- 📬 **Contact Form API** — Handle contact submissions with ease.
+- 🔐 **Secure & Extensible** — Ready for production with secure request handling.
+
+---
+
+## 📝 Features
+
+The following features are planned for future updates:
+- [X] Add User entity and admin command
+- [X] Hash User password on creation and install
+- [ ] Integrate JWT authentication for secure endpoints
+- [ ] API for changing email and password
+- [ ] 2FA authentication
+
+---
+
+## 📦 Installation
+
+### Prerequisites
+
+Make sure you have the following installed:
+- **PHP 8.2+**
+- **Composer** (Dependency manager for PHP)
+- **Database**: PostgreSQL
+
+### Steps to Set Up Locally
+
+1. **Clone the Repository**
+```bash
+git clone git@github.com:wawoxe/wawoxe-api.git
+```
+
+2. **Install Dependencies**
+```bash
+composer install
+```
+
+3. **Environment Configuration**
+```bash
+cp .env .env.local
+nano .env.local # Configure project
+```
+
+4. **Database setup**
+```bash
+symfony console doctrine:database:create # Only if database doesn't exist
+symfony console doctrine:migrations:migrate # Make all database migrations
+
+# If you want to recreate database, use next commands:
+symfony console doctrine:database:drop --force # WARNING: IT WILL DELETE ALL PREVIOUS DATA IN THE PROJECT DATABASE!
+symfony console doctrine:database:create # Create database
+symfony console doctrine:migrations:migrate # Make all database migrations
+```
+
+5. **Create admin user**
+```bash
+symfony console app:installation:make:admin admin@example.com adminpass # Change email and password to yours
+```
+
+6. **Run project**
+```bash
+symfony serve
+
+# OR
+
+docker-compose up --build # for running Docker
+```
+
+7. **Create admin user**
+```bash
+symfony console app:installation:make:admin admin@example.com adminpass # Change email and password to yours
+```
+
+8. **Access the API**
+```bash
+https://localhost:8000
+```
+
+---
+
+## ✅ Testing
+
+To ensure everything works as expected, run the test suite using PHPUnit:
+
+```bash
+php bin/phpunit
+```
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! 🚀
+
+To contribute:
+
+1. **Fork this repository**
+
+2. **Create a new branch**
+
+```bash
+git checkout -b feature/your-feature
+```
+
+3. **Make your changes and commit them**
+
+```bash
+git commit -m "Add your feature"
+```
+
+4. **Push to the branch**
+
+```bash
+git push origin feature/your-feature
+```
+
+5. **Open a Pull Request**
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+---
+
+## 🌟 Show Your Support
+
+If you like this project, give it a ⭐ on GitHub!
+
+---
