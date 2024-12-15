@@ -13,7 +13,7 @@ use function json_encode;
 
 use JsonException;
 
-class JWTHeader
+final readonly class JWTHeader
 {
     private string $alg;
     private string $typ;

@@ -26,15 +26,12 @@ use App\Service\JWT\Exceptions\InvalidTokenException;
 use App\Service\JWT\Exceptions\TokenExpiredException;
 use JsonException;
 
-class JWTService
+final readonly class JWTService
 {
-    private string $secretKey;
-    private JWTAlgorithm $algorithm;
-
-    public function __construct(string $secretKey, JWTAlgorithm $algorithm = JWTAlgorithm::HS256)
-    {
-        $this->secretKey = $secretKey;
-        $this->algorithm = $algorithm;
+    public function __construct(
+        private string $secretKey,
+        private JWTAlgorithm $algorithm = JWTAlgorithm::HS256
+    ) {
     }
 
     /**

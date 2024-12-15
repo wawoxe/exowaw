@@ -15,7 +15,7 @@ use function time;
 use App\Service\JWT\Exceptions\TokenExpiredException;
 use JsonException;
 
-readonly class JWTPayload
+final readonly class JWTPayload
 {
     /**
      * @param array<string, int|string> $claims
