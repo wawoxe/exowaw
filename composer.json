@@ -1,4 +1,5 @@
 {
+    "name": "wawoxe/wawoxe-api",
     "type": "project",
     "license": "MIT",
     "minimum-stability": "stable",
