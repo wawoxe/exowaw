@@ -9,6 +9,7 @@ declare(strict_types=1);
  */
 namespace App\EventSubscriber;
 
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -21,13 +22,18 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Throwable;
 
-class ExceptionSubscriber implements EventSubscriberInterface
+final readonly class ExceptionSubscriber implements EventSubscriberInterface
 {
     public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::EXCEPTION => ['onKernelException', 100],
         ];
+    }
+
+    public function __construct(
+        private ParameterBagInterface $parameterBag,
+    ) {
     }
 
     public function onKernelException(ExceptionEvent $event): void
@@ -38,8 +44,13 @@ class ExceptionSubscriber implements EventSubscriberInterface
     private function createErrorResponse(Throwable $exception): JsonResponse
     {
         $httpCode = $this->getHttpCode($exception);
+        $message  = null;
 
-        return new JsonResponse(['message' => $exception->getMessage(), 'code' => $httpCode], $httpCode);
+        if (true === $this->parameterBag->get('kernel.debug')) {
+            $message = $exception->getMessage();
+        }
+
+        return new JsonResponse(['message' => $message, 'code' => $httpCode], $httpCode);
     }
 
     private function getHttpCode(Throwable $exception): int

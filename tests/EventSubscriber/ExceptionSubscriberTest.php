@@ -16,6 +16,8 @@ use App\EventSubscriber\ExceptionSubscriber;
 use Exception;
 
 use PHPUnit\Framework\TestCase;
+
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,7 +33,10 @@ final class ExceptionSubscriberTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->exceptionSubscriber = new ExceptionSubscriber;
+        $parameterBag = new ParameterBag;
+        $parameterBag->set('kernel.debug', true);
+
+        $this->exceptionSubscriber = new ExceptionSubscriber($parameterBag);
     }
 
     /**
