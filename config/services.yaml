@@ -20,7 +20,3 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
-
-    App\Service\JWT\JWTService:
-        arguments:
-            - '%jwt.secret%'

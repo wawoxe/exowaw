@@ -28,7 +28,7 @@ The backend for powering your personal website.
 The following features are planned for future updates:
 - [X] Add User entity and admin command
 - [X] Hash User password on creation and install
-- [ ] Integrate JWT authentication for secure endpoints
+- [X] Integrate JWT authentication for secure endpoints
 - [ ] API for changing email and password
 - [ ] 2FA authentication
 
@@ -71,29 +71,29 @@ symfony console doctrine:database:drop --force # WARNING: IT WILL DELETE ALL PRE
 symfony console doctrine:database:create # Create database
 symfony console doctrine:migrations:migrate # Make all database migrations
 ```
-
-5. **Create admin user**
+6. **Create secret and public keys**
 ```bash
-symfony console app:installation:make:admin admin@example.com adminpass # Change email and password to yours
-```
+# Available options:
+# --skip-if-exists will silently do nothing if keys already exist.
+# --overwrite will overwrite your keys if they already exist.
 
-6. **Run project**
-```bash
-symfony serve
 
-# OR
-
-docker-compose up --build # for running Docker
+symfony console lexik:jwt:generate-keypair
 ```
 
 7. **Create admin user**
 ```bash
-symfony console app:installation:make:admin admin@example.com adminpass # Change email and password to yours
+symfony console app:installation:make:admin <email|username> <login> <password>
 ```
 
-8. **Access the API**
+8. **Run project**
 ```bash
-https://localhost:8000
+symfony serve
+```
+
+9. **Access the API**
+```bash
+https://localhost:8000/auth/jwt
 ```
 
 ## ✅ Testing

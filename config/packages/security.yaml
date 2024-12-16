@@ -9,15 +9,21 @@ security:
                 class: App\Entity\User
                 property: identifier
     firewalls:
+        auth:
+            pattern: ^/auth
+            stateless: true
+            json_login:
+                username_path: identifier
+                check_path: /auth/jwt
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
         api:
             pattern: ^/
             stateless: true
-            provider: app_user_provider
-            custom_authenticators:
-                - App\Security\JWTAuthenticator
+            jwt: ~
 
     access_control:
-        - { path: ^/auth, roles: PUBLIC_ACCESS }
+        - { path: ^/auth/jwt, roles: PUBLIC_ACCESS }
         - { path: ^/, roles: ROLE_USER }
 
 when@test:
