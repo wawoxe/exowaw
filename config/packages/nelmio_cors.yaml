@@ -1,0 +1,20 @@
+nelmio_cors:
+    defaults:
+        origin_regex: true
+        allow_origin: []
+        allow_methods: []
+        allow_headers: []
+        max_age: 0
+        allow_credentials: false
+    paths:
+        '^/auth':                                           # Public endpoint for auth
+            allow_origin: [ '%env(CORS_ALLOW_ORIGIN)%' ]    # Allow from env
+            allow_methods: [ 'POST' ]                       # Allow only POST method
+            allow_headers: [ 'Content-Type' ]
+            max_age: '%lexik_jwt_authentication.token_ttl%' # Cache CORS preflight for token TTL time
+            allow_credentials: false
+        '^/':                                              # Main secured path (can act as a catch-all)
+            allow_origin: []                               # No origins allowed by default
+            allow_methods: []                              # Methods allowed only for authorized users
+            allow_headers: [ 'Content-Type', 'Authorization' ]
+            allow_credentials: true
