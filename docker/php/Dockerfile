@@ -22,5 +22,10 @@ RUN pecl install xdebug && docker-php-ext-enable xdebug
 # Permissions
 RUN chown -R www-data:www-data /var/www/html
 
+# Grant write permissions to var/log and var/cache
+RUN mkdir -p var/log var/cache && \
+    chown -R www-data:www-data var/log var/cache && \
+    chmod -R 777 var/log var/cache
+
 # Expose the PHP port
 EXPOSE 9000
